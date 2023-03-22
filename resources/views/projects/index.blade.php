@@ -9,9 +9,9 @@
    <ul>
 
 
-    @foreach ($projects as $project )
+    @foreach($projects as $project )
 
-   <ul>{{$project->title}}</ul>
+   <li>{{ $project->title }}</li>
 
     @endforeach
 

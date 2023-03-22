@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProjectController;
 use App\Models\Project;
 use Illuminate\Support\Facades\Route;
 
@@ -18,18 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/projects', function () {
-    $projects = Project::all();
+Route::get('/projects', [ProjectController::class, 'index']);
 
-    return view('projects', compact('projects'));
-});
-
-Route::post('/projects', function () {
-    //validate
-
-    //persist
-    Project::create(request(['title', 'description']));
-    //redirect
-
-
-});
+Route::post('/projects', [ProjectController::class, 'store']);

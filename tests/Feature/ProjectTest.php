@@ -21,18 +21,12 @@ class ProjectTest extends TestCase
 
         $this->post('/projects', $attriutes)->assertRedirect('/projects');
 
-        // $this->assertDatabaseHas('projects', $attriutes);
-        // $this->get('/projects')->assertSee($attriutes['title']);
+        $this->assertDatabaseHas('projects', $attriutes);
+        $this->get('/projects')->assertSee($attriutes['title']);
     }
 
-    /**@test*/
-    // public function test_a_user_can_see_project_title_successfully()
-    // {
-    //     $this->withoutExceptionHandling();
-    //     $attriutes = [
-    //         'title' => $this->faker->sentence,
-    //         'description' => $this->faker->paragraph
-    //     ];
-    //     $this->get('/projects')->assertSee($attriutes['title']);
-    // }
+    public function test_a_project_requires_a_title()
+    {
+        $this->postJson('/projects', [])->assertSessionHasErrors('title');
+    }
 }

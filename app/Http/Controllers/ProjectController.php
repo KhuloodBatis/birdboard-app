@@ -18,8 +18,12 @@ class ProjectController extends Controller
     {
         //validate
 
+        $attributes = request()->validate([
+            'title' => 'required',
+            'description' => 'required'
+        ]);
         //persist
-        Project::create(request(['title', 'description']));
+        Project::create($attributes);
         //redirect
 
         return redirect('/projects');

@@ -14,6 +14,12 @@ class ProjectController extends Controller
         return view('projects.index', compact('projects'));
     }
 
+    public function show(Project $project)
+    {
+        return view('projects.show', compact('project'));
+    }
+
+
     public function store()
     {
         //validate
@@ -22,6 +28,7 @@ class ProjectController extends Controller
             'title' => 'required',
             'description' => 'required'
         ]);
+
         //persist
         Project::create($attributes);
         //redirect

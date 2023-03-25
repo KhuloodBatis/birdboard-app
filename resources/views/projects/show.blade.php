@@ -8,7 +8,7 @@
 
     <h1>{{$project->title}}</h1>
 
-    <h1>{{$project->description}}</h1>
-    
+    <h3>{{$project->description}}</h3>
+
 </body>
 </html>

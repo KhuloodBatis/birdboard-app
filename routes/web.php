@@ -20,15 +20,16 @@ Route::get('/', function () {
 });
 
 
-
-Route::get('/projects', [ProjectController::class, 'index']);
-Route::get('/projects/{project}', [ProjectController::class, 'show']);
-
-Route::post('/projects', [ProjectController::class, 'store'])->middleware('auth:sanctum');
-
-
-
-
 Auth::routes();
+
+Route::group(['middleware'=> 'auth'], function () {
+
+    Route::resource('/projects', ProjectController::class);
+});
+
+
+
+
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

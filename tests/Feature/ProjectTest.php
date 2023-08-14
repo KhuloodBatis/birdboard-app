@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -20,7 +21,8 @@ class ProjectTest extends TestCase
             'description' => $this->faker->paragraph
         ];
 
-        $this->post('/projects', $attriutes)->assertRedirect('/projects');
+        $this->actingAs(User::factory()->create())
+             ->post('/projects', $attriutes)->assertRedirect('/projects');
 
         $this->assertDatabaseHas('projects', $attriutes);
         $this->get('/projects')->assertSee($attriutes['title']);
@@ -30,7 +32,8 @@ class ProjectTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $project = Project::factory()->create();
-        $this->get($project->path())
+        $this->actingAs(User::factory()->create())
+        ->get($project->path())
             ->assertsee($project->title)
             ->assertsee($project->description);
     }
@@ -38,12 +41,21 @@ class ProjectTest extends TestCase
     public function test_a_project_requires_a_title()
     {
         $attriutes = Project::factory()->raw(['title' => []]);
-        $this->post('/projects', $attriutes)->assertSessionHasErrors('title');
+        $this->actingAs(User::factory()->create())
+        ->post('/projects', $attriutes)->assertSessionHasErrors('title');
     }
 
     public function test_a_project_requires_a_description()
     {
         $attriutes = Project::factory()->raw(['description' => []]);
-        $this->post('/projects', $attriutes)->assertSessionHasErrors('description');
+        $this->actingAs(User::factory()->create())
+        ->post('/projects', $attriutes)->assertSessionHasErrors('description');
+    }
+
+    public function test_only_authenticated_users_can_create_projects()
+    {
+
+        $attriutes = Project::factory()->raw();
+        $this->post('/projects', $attriutes)->assertRedirect('login');
     }
 }

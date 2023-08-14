@@ -10,7 +10,7 @@ return [
     /*
      * Possible values are 'auto', 'light' and 'dark'.
      */
-    'theme' => 'auto',
+    'theme' => 'dark',
 
     /*
      * By default this package will only run in local development.

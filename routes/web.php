@@ -27,9 +27,4 @@ Route::group(['middleware'=> 'auth'], function () {
     Route::resource('/projects', ProjectController::class);
 });
 
-
-
-
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    <title>Document</title>
-</head>
-<body>
+@extends ('layouts.app')
+@section('content')
 
 
-    <form class="container" action="/projects" method="POST" style="padding-top: 40px">
+    <form class="container" action="/projects" method="POST">
        @csrf
        <h1 class="heading is-1">Create a Projects</h1>
 
@@ -34,5 +29,4 @@
 
 </form>
 
-</body>
-</html>
+@endsection

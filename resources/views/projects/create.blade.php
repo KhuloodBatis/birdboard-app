@@ -2,7 +2,7 @@
 @section('content')
 
 
-    <form class="container" action="/projects" method="POST">
+    <form action="/projects" method="POST">
        @csrf
        <h1 class="heading is-1">Create a Projects</h1>
 
@@ -24,6 +24,7 @@
 
     <div class="control">
          <button type="submit" class="button is-link">Create Project</button>
+         <a href="/projects">Cancel</a>
     </div>
 </div>
 

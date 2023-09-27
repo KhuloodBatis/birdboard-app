@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProjectTest extends TestCase
+class ManageProjectTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
@@ -46,8 +46,8 @@ class ProjectTest extends TestCase
         $this->actingAs(User::factory()->create())
         ->get('/projects/create')->assertStatus(200);
 
-        $this->actingAs(User::factory()->create())
-            ->post('/projects', $attriutes)->assertRedirect('/projects');
+           $this->signIn();
+            $this->post('/projects', $attriutes)->assertRedirect('/projects');
 
         $this->assertDatabaseHas('projects', $attriutes);
     }

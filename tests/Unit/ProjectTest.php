@@ -10,7 +10,7 @@ use Tests\TestCase;
 class ProjectTest extends TestCase
 {
     use RefreshDatabase;
-    public function test_it_has_a_path()
+    public function test_it_project_has_a_path()
     {
         $project = Project::factory()->create();
         $this->assertEquals('/projects/' . $project->id, $project->path());

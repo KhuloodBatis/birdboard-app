@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,6 +20,8 @@ class TaskFactory extends Factory
         return [
 
             'body' => fake()->sentence,
+            'completed' => true,
+            'project_id' => Project::factory()->create()
         ];
     }
 }

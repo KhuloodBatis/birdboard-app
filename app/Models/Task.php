@@ -15,6 +15,23 @@ class Task extends Model
 
     protected $touches = ['project'];
 
+    protected $casts = [
+        'completed' => 'boolean'
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created( function ($task){
+          Activity::create([
+            'project_id' => $task->project->id,
+            'description' => 'created_task'
+          ]);
+        });
+
+    }
+
     public function path()
     {
         return "/projects/{$this->project->id}/tasks/{$this->id}";
@@ -27,5 +44,15 @@ class Task extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public Function complete(){
+        $this->update(['completed'=> true]);
+        $this->project->recordActivity('completed_task');
+    }
+
+    public Function incomplete(){
+        $this->update(['completed'=> false]);
+        $this->project->recordActivity('incompleted_task');
     }
 }

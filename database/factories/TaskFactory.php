@@ -20,7 +20,7 @@ class TaskFactory extends Factory
         return [
 
             'body' => fake()->sentence,
-            'completed' => true,
+            'completed' => false,
             'project_id' => Project::factory()->create()
         ];
     }

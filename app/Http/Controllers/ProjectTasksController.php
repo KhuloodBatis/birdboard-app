@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ProjectTasksController extends Controller
 {
-    public function store(Project $project )
+    public function store(Project $project)
     {
         $this->authorize('update', $project);
 
@@ -22,13 +22,14 @@ class ProjectTasksController extends Controller
         return redirect($project->path());
     }
 
-    public function update(Project $project , Task $task)
+    public function update(Project $project, Task $task)
     {
-      $this->authorize('update', $task->project);
-        $task->update([
-            'body' => request('body'),
-            'completed' => request()->has('completed'),
-        ]);
+        $this->authorize('update', $task->project);
+        $task->update(['body' => request('body')]);
+
+        $method = request('completed') ? 'complete' : 'incomplete';
+        $this->$method();
+
         return redirect($project->path());
     }
 }

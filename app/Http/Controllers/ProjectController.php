@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -16,30 +17,37 @@ class ProjectController extends Controller
 
     public function create()
     {
-
       return view('projects.create');
     }
+
     public function show(Project $project)
     {
-        if(auth()->user()->isNot($project->owner)){
-            abort(403);
-        }
+        $this->authorize('update', $project);
+
         return view('projects.show', compact('project'));
     }
 
 
-    public function store()
+    public function store(ProjectRequest $request)
     {
-        //validate
 
-        $attributes = request()->validate([
-            'title' => ['required','string'],
-            'description' => ['required','string'],
-        ]);
-
-      $project = auth()->user()->projects()->create( $attributes);
+      $project = auth()->user()->projects()->create( $request->validated());
 
 
         return redirect( $project->path());
+    }
+
+    public function edit(Project $project)
+    {
+        return view('projects.edit', compact('project'));
+    }
+
+    public function update(ProjectRequest $request,Project $project)
+    {
+        $this->authorize('update', $project);
+        $project->update($request->validated());
+
+        return redirect($project->path());
+
     }
 }

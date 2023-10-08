@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTasksController;
-use App\Models\Project;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------

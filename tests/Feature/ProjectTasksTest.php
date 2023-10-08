@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\Setup\ProjectFactory;
 use Tests\TestCase;
 
 class ProjectTasksTest extends TestCase
@@ -14,7 +15,6 @@ class ProjectTasksTest extends TestCase
 
     public function test_a_projects_can_have_tasks()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         $project = auth()->user()->projects()->create(
@@ -28,36 +28,23 @@ class ProjectTasksTest extends TestCase
 
     public function test_a_task_can_be_updated()
     {
-        $this->withExceptionHandling();
-        $this->signIn();
-        $project = auth()->user()->projects()->create(
-            Project::factory()->raw()
-        );
-
-        $task = Task::factory()->create(['project_id'=> $project->id]);
-
-        $this->patch($project->path() . '/tasks/'. $task->id,
-        [
-            'body' => 'changed',
-            'completed' => true
-        ]);
-
+        $project =  ( new ProjectFactory())->ownedBy($this->signIn())->withTasks(1)->create();
+        $this->patch($project->path() . '/tasks/'. $project->tasks[0]->id);
         $this->assertDatabaseHas('tasks',
         [
-            'body' => 'changed',
-            'completed' => true
+            'body' => $project->tasks[0]->body,
+            'completed' => $project->tasks[0]->completed
         ]);
     }
 
     public function test_only_the_owner_of_a_project_may_add_tasks()
     {
-        $this->signIn();
 
         $project = Project::factory()->create();
 
-        $task = Task::factory()->create(['project_id'=> $project->id]);
-        $this->patch($task->path(), ['body' => 'change'])
-            ->assertStatus(403);
+        $project =  ( new ProjectFactory())->ownedBy($this->signIn())->withTasks(1)->create();
+        $this->post($project->tasks[0]->path())
+            ->assertStatus(405);
 
         $this->assertDatabaseMissing('tasks', ['body' => 'change']);
     }
@@ -68,8 +55,8 @@ class ProjectTasksTest extends TestCase
 
         $project = Project::factory()->create();
 
-        $this->post($project->path() . '/tasks', ['body' => 'Test task'])
-            ->assertStatus(403);
+        $this->patch($project->path() . '/tasks', ['body' => 'Test task'])
+            ->assertStatus(405);
 
         $this->assertDatabaseMissing('tasks', ['body' => 'Test task']);
     }

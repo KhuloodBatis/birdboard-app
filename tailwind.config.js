@@ -13,6 +13,7 @@ module.exports = {
         'grey' : 'rgba(0,0,0,0.4)',
         'cyan-500' :'#47cdff',
         'cyan-400' :'#8ae2fe',
+         'red-700' :'rgb(154 52 18)'
       }
   },
   plugins: [],

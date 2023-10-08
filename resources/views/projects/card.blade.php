@@ -6,7 +6,7 @@
 
         </h1>
 
-         <div class='text-grey'>{{str_limit($project->description,80)}}</div>
+         <div class='text-grey text-clip overflow-hidden'>{{$project->description}}</div>
 
     </div>
 

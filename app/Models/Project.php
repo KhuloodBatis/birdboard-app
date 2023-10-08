@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
@@ -34,7 +35,17 @@ class Project extends Model
 
   public function addTask($body)
   {
-    $this->tasks()->create(compact('body'));
+    $this->tasks()->create(['body' => $body]);
 
   }
+
+ /**
+  * Get all of the activity for the Project
+  *
+  * @return \Illuminate\Database\Eloquent\Relations\HasMany
+  */
+ public function activity(): HasMany
+ {
+     return $this->hasMany(Activity::class);
+ }
 }

@@ -43,17 +43,19 @@ class ProjectTasksTest extends TestCase
         $project =  ( new ProjectFactory())->ownedBy($this->signIn())->withTasks(1)->create();
         $this->actingAs($project->owner)
         ->patch($project->tasks[0]->path(),[
+            'body' => 'changed',
             'completed' => true
         ]);
 
         $this->assertDatabaseHas('tasks',
         [
-            'completed' =>true
+            'body' => 'changed',
+            'completed' =>true,
         ]);
     }
     public function test_a_task_can_be_incompleted()
     {
-      
+
         $project =  ( new ProjectFactory())->ownedBy($this->signIn())->withTasks(1)->create();
         $this->actingAs($project->owner)
         ->patch($project->tasks[0]->path(),[

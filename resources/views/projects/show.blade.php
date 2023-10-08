@@ -78,7 +78,7 @@
 
           @include ("projects.card")
 
-    </div>
+          @include("projects.activity.card")
    </main>
 
 

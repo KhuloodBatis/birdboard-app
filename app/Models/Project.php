@@ -45,11 +45,11 @@ class Project extends Model
      */
     public function activity(): HasMany
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->latest();
     }
 
     public function recordActivity($description)
     {
-        $this->activity()->create(compact('description'));
+        $this->activity()->create(compact('description'))->latest();
     }
 }
